@@ -33,8 +33,8 @@ class Menu extends Phaser.Scene{
             'Use arrow keys to move & (F) to fire', menuConfig).setOrigin(.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 
-            'Press LEFT for Novice, RIGHT for Pro', menuConfig).setOrigin(.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding + 15, 
+            'Press LEFT for Novice, \nRIGHT for Super-Chad-Pro', menuConfig).setOrigin(.5);
  
         //define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
