@@ -1,4 +1,4 @@
-import TimerController from "../Controllers/TimerController";
+import TimerController from "./Controllers/TimerController";
 
 class Play extends Phaser.Scene{
 
