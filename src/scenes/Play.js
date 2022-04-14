@@ -43,7 +43,7 @@ class Play extends Phaser.Scene{
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //animation config
+        //animation config for explosion
         this.anims.create({
             key: 'shipExplode',
             frames: this.anims.generateFrameNumbers('shipExplo', { start: 0, end: 9, first: 0}),
@@ -67,17 +67,37 @@ class Play extends Phaser.Scene{
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize+ borderPadding*2, this.p1Score, scoreConfig);
 
+        scoreConfig.fixedWidth = 0;
+
         //game over flag
         this.gameOver = false;
 
-        //play clock/timer
-        scoreConfig.fixedWidth = 0;
+        //play clock/timer with oneShot delayedCall event
         this.clock = this.time.delayedCall(game.settings.gameTime, () =>{
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart, LEFT for Menu', 
                 scoreConfig).setOrigin(.5);
             this.gameOver = true;
         }, null, this);
+
+        // //Start/create clock with Looped timer
+        // this.clock = this.time.addEvent({
+        //     delay: game.settings.gameTime,
+        //     //callback: this.gameOverCall(),
+        //     //arg: this.gameOverCall(scoreConfig,this.gameOver),
+        //     arg: this.timerDisplay = this.add.text(game.config.width/2, borderUISize + borderPadding*2, '60', scoreConfig).setOrigin(.5,0),
+
+        // });
+
+        //update timer
+        // this.selapsed = this.clock.getElapsed()
+        // this.remaining = this.clock.duration - this.elapsed
+        // this.seconds = this.remaining / 1000
+
+        //this.timerDisplay.text = seconds.toFixed(2)
+
+        //Display clock/timer
+        //this.timerDisplay = this.add.text(game.config.width/2, borderUISize + borderPadding*2, this.seconds.toFixed(2), scoreConfig).setOrigin(.5,0);
 
     }
 
@@ -112,6 +132,7 @@ class Play extends Phaser.Scene{
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+
     }
 
     checkCollision(box1, box2){
@@ -145,4 +166,13 @@ class Play extends Phaser.Scene{
         //audio
         this.sound.play('sfx_explosion');
     }
+
+    gameOverCall(scoreConfig, gameOver){
+        this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart, LEFT for Menu', 
+            this.scoreConfig).setOrigin(.5);
+        this.gameOver = true;
+    }
+
+
 }
