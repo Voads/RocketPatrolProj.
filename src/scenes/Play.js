@@ -1,4 +1,9 @@
+import TimerController from "../Controllers/TimerController";
+
 class Play extends Phaser.Scene{
+
+    /** @type {TimerController}*/
+    timer
     constructor(){
         super("playScene");
     }
@@ -72,13 +77,13 @@ class Play extends Phaser.Scene{
         //game over flag
         this.gameOver = false;
 
-        //play clock/timer with oneShot delayedCall event
-        this.clock = this.time.delayedCall(game.settings.gameTime, () =>{
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart, LEFT for Menu', 
-                scoreConfig).setOrigin(.5);
-            this.gameOver = true;
-        }, null, this);
+        // //play clock/timer with oneShot delayedCall event
+        // this.clock = this.time.delayedCall(game.settings.gameTime, () =>{
+        //     this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+        //     this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart, LEFT for Menu', 
+        //         scoreConfig).setOrigin(.5);
+        //     this.gameOver = true;
+        // }, null, this);
 
         // //Start/create clock with Looped timer
         // this.clock = this.time.addEvent({
@@ -98,6 +103,15 @@ class Play extends Phaser.Scene{
 
         //Display clock/timer
         //this.timerDisplay = this.add.text(game.config.width/2, borderUISize + borderPadding*2, this.seconds.toFixed(2), scoreConfig).setOrigin(.5,0);
+
+        //Timer with youtube method from: "ourcade with supertommy" -- https://www.youtube.com/watch?v=zr-a-maJp2k&ab_channel=ourcadewithsupertommy
+        //Display clock/timer
+        const timerDisplay = this.add.text(game.config.width/2, borderUISize + borderPadding*2, '60', scoreConfig)
+            .setOrigin(.5,0);
+
+        this.timer = new TimerController(this, timerDisplay)
+        this.timer.start(game.settings.gameTime,this.gameOverCall.bind(this))
+
 
     }
 

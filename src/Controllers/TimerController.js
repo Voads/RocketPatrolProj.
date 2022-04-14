@@ -9,6 +9,9 @@ export default class TimerController{
     /** @type {Phaser.Time.TimerEvent} */
     timerEvent
 
+    // /** @type {() => void} */
+    // finishedCallback
+
     duration = 0;
 
     /**
@@ -21,22 +24,46 @@ export default class TimerController{
         this.display = display;
     }
 
-    start(duration){
+    /**
+     * 
+     * @param {number} duration 
+     * @param {() => void} callback 
+     */
+    start(duration, callback){
+
+        this.stop()
+
+        this.finishedCallback = callback
+
+        this.scene.time.addEvent({
+            delay: duration,
+            callback: () => {
+                this.stop()
+
+                if (callback)
+                    { callback() }
+            }
+        })
+    }
+
+    stop(){
         if (this.timerEvent){
             this.timerEvent.destroy()
             this.timerEvent = undefined
         }
-        this.scene.time.addEvent({
-            delay: duration
-        })
     }
 
     update(){
-        if (!this.timerEvent){
+        if (!this.timerEvent || this.duration <= 0){
             return
         }
 
-        const elapsed = this.timerEvent
+        const elapsed = this.timerEvent.getElapsed()
+        const remaining = this.duration - elapsed
+        const seconds = remaining / 1000
+
+        this.display.text = seconds.toFixed(2);
+        
 
     }
 }
