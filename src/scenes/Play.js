@@ -58,14 +58,17 @@ class Play extends Phaser.Scene{
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'left',
             padding:{
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 120
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize+ borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize+ borderPadding * 2, this.p1Score,    
+            scoreConfig);
+        this.scoreRight = this.add.text(game.config.width - borderPadding - borderUISize, borderUISize + borderPadding * 2, 
+            "HS:" + highScore, scoreConfig).setOrigin(1,0);
 
         //game over flag
         this.gameOver = false;
@@ -77,6 +80,9 @@ class Play extends Phaser.Scene{
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart, LEFT for Menu', 
                 scoreConfig).setOrigin(.5);
             this.gameOver = true;
+
+            //set highScore
+            this.TrackHighScore(this.p1Score);
         }, null, this);
 
     }
@@ -105,10 +111,10 @@ class Play extends Phaser.Scene{
 
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)){
-            this.p1Rocket.reset();
             this.shipExplode(this.ship02);
         }
         if (this.checkCollision(this.p1Rocket, this.ship01)){
+            this.p1Rocket.reset();
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
@@ -144,5 +150,14 @@ class Play extends Phaser.Scene{
 
         //audio
         this.sound.play('sfx_explosion');
+    }
+
+    //check and replace high score
+    TrackHighScore(myScore){
+
+        if (highScore < myScore){
+            highScore = myScore;
+        }
+
     }
 }
