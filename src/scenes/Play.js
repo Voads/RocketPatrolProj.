@@ -30,11 +30,15 @@ class Play extends Phaser.Scene{
         'rocket').setOrigin(0.5, 0);
 
         //add spaceships
+        this.shipSpecial = new SpaceshipSpecial(this, game.config.width + borderUISize*6, borderUISize * 3.5,
+            'rocket', 0, 50).setOrigin(0,0);
+        this.shipSpecial.create();
+
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4,
              'spaceship', 0, 30).setOrigin(0,0); //uppermost ship 
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2,
              'spaceship', 0, 20).setOrigin(0,0); //Mid ship
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 +borderPadding*4,
+        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4,
              'spaceship', 0, 10).setOrigin(0,0); //Bottom ship
 
         //define keys
@@ -67,13 +71,14 @@ class Play extends Phaser.Scene{
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize+ borderPadding * 2, this.p1Score,    
             scoreConfig);
+        //display High Score of play session
         this.scoreRight = this.add.text(game.config.width - borderPadding - borderUISize, borderUISize + borderPadding * 2, 
             "HS:" + highScore, scoreConfig).setOrigin(1,0);
 
         //game over flag
         this.gameOver = false;
 
-        //play clock/timer
+        //play clock/timer with 'oneShot' timer
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTime, () =>{
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
@@ -81,7 +86,7 @@ class Play extends Phaser.Scene{
                 scoreConfig).setOrigin(.5);
             this.gameOver = true;
 
-            //set highScore
+            //track highScore at end of round 
             this.TrackHighScore(this.p1Score);
         }, null, this);
 
@@ -99,12 +104,18 @@ class Play extends Phaser.Scene{
         if(!this.gameOver){
             this.starfield.tilePositionX -= 4;
             this.p1Rocket.update();
+            this.shipSpecial.update();
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
         }
 
         //Collision check
+        if (this.checkCollision(this.p1Rocket, this.shipSpecial)){
+            this.p1Rocket.reset();
+            this.shipExplode(this.shipSpecial);
+
+        }
         if (this.checkCollision(this.p1Rocket, this.ship03)){
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
@@ -118,6 +129,10 @@ class Play extends Phaser.Scene{
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
         }
+
+        //update timer display
+        
+
     }
 
     checkCollision(box1, box2){

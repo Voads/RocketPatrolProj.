@@ -5,7 +5,7 @@ class Spaceship extends Phaser.GameObjects.Sprite{
         scene.add.existing(this);
         this.points = pointVal;
         this.moveSpeed = game.settings.spaceshipSpeed;
-        this.randomSpeed = Phaser.Math.Between(this.moveSpeed - .5, this.moveSpeed + 1);;
+        this.randomSpeed = Phaser.Math.Between(this.moveSpeed - .5, this.moveSpeed + 1);
     }
 
     // create(){
@@ -25,6 +25,7 @@ class Spaceship extends Phaser.GameObjects.Sprite{
 
     //reset pos
     reset(){
+        this.randomSpeed = Phaser.Math.Between(this.moveSpeed - .5, this.moveSpeed + 1);
         this.x = game.config.width;
     }
 }
