@@ -90,6 +90,11 @@ class Play extends Phaser.Scene{
             this.TrackHighScore(this.p1Score);
         }, null, this);
 
+        //display clock/timer
+        this.secondsLeft = game.settings.gameTime;
+        this.displayTimer = this.add.text(game.config.width/2, borderUISize+ borderPadding * 2, this.seconds,    
+            scoreConfig).setOrigin(.5,0);
+
     }
 
     update(){
@@ -131,7 +136,17 @@ class Play extends Phaser.Scene{
         }
 
         //update timer display
-        
+        if(!this.gameOver && this.secondsLeft >= 0){
+            this.secondsLeft = (game.settings.gameTime - this.clock.getElapsed()) / 1000;
+            this.displayTimer.text = this.secondsLeft.toFixed(2);
+
+        }
+        else{ //sometimes the display is off by .02 seconds, correct this
+            this.secondsLeft = 0.00;
+            this.displayTimer.text = this.secondsLeft.toFixed(2);
+            
+        }
+
 
     }
 
@@ -174,5 +189,10 @@ class Play extends Phaser.Scene{
             highScore = myScore;
         }
 
+    }
+
+    updateTimerDisplay(){
+        seconds --;
+        this.displayTimerTimer.text = this.seconds;
     }
 }
