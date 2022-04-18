@@ -30,7 +30,7 @@ class SpaceshipSpecial extends Phaser.GameObjects.Sprite{
         {
             if(this.x <= this.width)
             {
-                console.log("is less than going Left");
+                // console.log("is less than going Left");
                 this.handleWrap(this.goLeft);
             }
         }
@@ -38,7 +38,7 @@ class SpaceshipSpecial extends Phaser.GameObjects.Sprite{
         {
             if(this.x > game.config.width)
             {
-                console.log("is Greater going Right");
+                // console.log("is Greater going Right");
                 this.handleWrap(this.goLeft);
             }
         }
