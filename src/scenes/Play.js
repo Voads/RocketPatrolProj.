@@ -264,11 +264,46 @@ class Play extends Phaser.Scene{
             //pause game timer
             this.clock.paused = true;
 
-            //add time
-            var addTime = (3 + myCombo) * 1000;
-            this.delayClock = this.time.addEvent({delay: addTime, callback: () =>{
-                this.clock.paused = false;
-            }, callbackScope: this.AddTimeCheck(), repeat: 0});
+            //var addTime = 0;
+            //cap pause time at a maximum of 5 seconds (reached at a combo of 5 and above)
+            if (myCombo <= 5){
+                //add time
+                var addTime = (myCombo) * 1000;
+            }
+            else{
+                var addTime = 5 * 1000;
+            }
+
+            //reset timer if it is still going
+            if (this.delayClock){
+                //console.log('resetting delayclock timer.');
+                this.delayClock.reset({
+                    delay: addTime,                // ms
+                    callback: () =>
+                    {
+                        this.clock.paused = false;
+                        console.log('reset timer finished...')       
+                        //this.delayClock.remove();
+                    },
+                    callbackScope: this,
+                    loop: false,
+                    repeat: 0,
+                    startAt: 0,
+                    timeScale: 1,
+                    paused: false
+                });
+                this.time.addEvent(this.delayClock);
+            }
+            
+            //start delay timer
+            else {
+                this.delayClock = this.time.addEvent({delay: addTime, callback: () =>{
+                    this.clock.paused = false;
+                    console.log('delayClock finished...')
+                    //this.delayClock.remove();
+
+                }, callbackScope: this, repeat: 0});
+            }
             
             console.log("Adding time by pausing timer.", this.delayClock.delay.toFixed(2));
 
