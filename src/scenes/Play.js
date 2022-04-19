@@ -5,14 +5,17 @@ class Play extends Phaser.Scene{
 
     preload(){
         //load images/tile sprites
+        this.load.image('fastShip', './assets/fastShip.png');
         this.load.image('rocket', './assets/rocketAlt.png');
         this.load.image('spaceship', './assets/spaceshipAlt.png');
-        this.load.image('starfieldBG', './assets/starfieldBG.png');
+        this.load.image('starfieldBG', './assets/starfieldBGAlt.png');
         this.load.image('starfieldClose', './assets/starfieldClose.png');
         this.load.image('starfieldMid', './assets/starfieldMid.png');
         this.load.image('starfieldFar', './assets/starfieldFar.png');
-        this.load.spritesheet('shipExplo', './assets/shipExplosion.png', 
-            {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('shipExplo', './assets/shipExplosionAlt.png', 
+            {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 8});
+        this.load.spritesheet('spaceshipAltAnim', './assets/spaceshipAltAnim.png',
+            {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 2});
         
         this.load.image('particle', './assets/defaultParticle.png');
         this.load.image('particleOrange', './assets/darkOrangeParticle.png');
@@ -34,16 +37,38 @@ class Play extends Phaser.Scene{
 
         //add spaceships
         this.shipSpecial = new SpaceshipSpecial(this, game.config.width + borderUISize*6, borderUISize * 3.5,
-            'rocket', 0, 50).setOrigin(0,0);
-        this.shipSpecial.create();
+            'fastShip', 0, 50).setOrigin(0,0);
 
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4,
-             'spaceship', 0, 30).setOrigin(0,0); //uppermost ship 
+             'spaceshipAltAnim', 0, 30).setOrigin(0,0); //uppermost ship 
+        this.ship01.anims.create({
+            key: 'spaceshipAnim',
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('spaceshipAltAnim', {start: 0, end: 1, first: 0}),
+            repeat: -1
+        });
+        this.ship01.play('spaceshipAnim');
+        
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2,
-             'spaceship', 0, 20).setOrigin(0,0); //Mid ship
+             'spaceshipAltAnim', 0, 20).setOrigin(0,0); //Mid ship
+             this.ship02.anims.create({
+                key: 'spaceshipAnim',
+                frameRate: 12,
+                frames: this.anims.generateFrameNumbers('spaceshipAltAnim', {start: 0, end: 1, first: 0}),
+                repeat: -1
+            });
+            this.ship02.play('spaceshipAnim');
+
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4,
-             'spaceship', 0, 10).setOrigin(0,0); //Bottom ship
-             
+             'spaceshipAltAnim', 0, 10).setOrigin(0,0); //Bottom ship
+        this.ship03.anims.create({
+            key: 'spaceshipAnim',
+            frameRate: 12,
+            frames: this.anims.generateFrameNumbers('spaceshipAltAnim', {start: 0, end: 1, first: 0}),
+            repeat: -1
+        });
+        this.ship03.play('spaceshipAnim');
+
         //white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
@@ -61,7 +86,7 @@ class Play extends Phaser.Scene{
         this.anims.create({
             key: 'shipExplode',
             frames: this.anims.generateFrameNumbers('shipExplo', { start: 0, end: 9, first: 0}),
-            frameRate: 30
+            frameRate: 24
         });
 
         //create particle emitter(s)
@@ -141,6 +166,7 @@ class Play extends Phaser.Scene{
         }
         if(!this.gameOver){
             //Parallax
+            this.starfieldBG.tilePositionX -= .5;
             this.starfieldClose.tilePositionX -= 5;
             this.starfieldMid.tilePositionX -= 2.5;
             this.starfieldFar.tilePositionX -= 1;

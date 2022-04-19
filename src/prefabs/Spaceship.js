@@ -9,7 +9,7 @@ class Spaceship extends Phaser.GameObjects.Sprite{
     }
 
     // create(){
-    //     this.randomSpeed = Phaser.Math.Between(1, this.moveSpeed + 1);
+        
     // }
 
     update(){
