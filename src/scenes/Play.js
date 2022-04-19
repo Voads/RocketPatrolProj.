@@ -38,6 +38,7 @@ class Play extends Phaser.Scene{
         //add spaceships
         this.shipSpecial = new SpaceshipSpecial(this, game.config.width + borderUISize*6, borderUISize * 3.5,
             'fastShip', 0, 50).setOrigin(0,0);
+        this.shipSpecial.create();
 
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4,
              'spaceshipAltAnim', 0, 30).setOrigin(0,0); //uppermost ship 
@@ -85,7 +86,7 @@ class Play extends Phaser.Scene{
         //animation config
         this.anims.create({
             key: 'shipExplode',
-            frames: this.anims.generateFrameNumbers('shipExplo', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('shipExplo', { start: 0, end: 8, first: 0}),
             frameRate: 24
         });
 

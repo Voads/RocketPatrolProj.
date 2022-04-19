@@ -10,7 +10,7 @@ class SpaceshipSpecial extends Phaser.GameObjects.Sprite{
 
      create(){
         //randomize starting direction on create
-        if (Phaser.Math.Between(0,1) > 0.5)
+        if (Phaser.Math.Between(0,1) >= 0.5)
             { this.goLeft = true; }
         else 
             { this.goLeft = false; }
@@ -29,17 +29,17 @@ class SpaceshipSpecial extends Phaser.GameObjects.Sprite{
         //wrap edge-to-edge of game screen no matter the velocity
         if (this.goLeft)
         {
-            // console.log("is less than going Left");
-            if(this.x <= this.width)
+            if(this.x <= this.width - 16)
             {
+                console.log("is less than going Left");
                 this.handleWrap(this.goLeft);
             }
         }
         else 
         {
-            // console.log("is Greater going Right");
             if(this.x > game.config.width)
             {
+                console.log("is Greater going Right");
                 this.handleWrap(this.goLeft);
             }
         }
@@ -48,27 +48,18 @@ class SpaceshipSpecial extends Phaser.GameObjects.Sprite{
     //reset pos
     reset(){
 
-        this.reverseBool(this.goLeft);
+        //reverse direction
+        this.goLeft = !this.goLeft;
         this.handleWrap(this.goLeft);
-    //  this.x = game.config.width;
 
     }
 
     handleWrap(goLeft){
-        if (goLeft){
+        if (this.goLeft){
             this.x = game.config.width;
         } else{
             this.x = 0;
         }
 
-    }
-
-    reverseBool(myBool){
-        if (myBool){
-            myBool = false;
-        }
-        else{
-            myBool = true;
-        }
     }
 }
