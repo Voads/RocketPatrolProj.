@@ -44,6 +44,10 @@ Finally,
 
 Total: 115
 
+Creative tilt:
+Also added idle animations for the main ships
+
+
 no collaborators
 main resource: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/
 */
