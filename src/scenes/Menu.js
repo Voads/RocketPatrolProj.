@@ -46,7 +46,7 @@ class Menu extends Phaser.Scene{
             //novice
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTime: 60000
+                gameTime: 45000
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene');
@@ -55,7 +55,7 @@ class Menu extends Phaser.Scene{
             //hard
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTime: 45000
+                gameTime: 25000
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene');
