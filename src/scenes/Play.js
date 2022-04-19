@@ -90,20 +90,32 @@ class Play extends Phaser.Scene{
         });
 
         //create particle emitter(s)
-        this.particle = this.add.particles('particle');
+        // this.particleWhite = this.add.particles('particle');
+        this.particle = this.add.particles('particleOrange');
         //his.particle = this.add.particles('particleOrange');
+        // this.exploEmitter02 = this.particleWhite.createEmitter({
+        //     x: 0,
+        //     y: 0,
+        //     speed: { min: -400, max: 400 },
+        //     angle: { min: 0, max: 360 },
+        //     scale: { start: 1, end: 0, ease: 'Power3' },    
+        //     blandMode: 'MULITPLY',
+        //     active: false,
+        //     lifespan: { min: 900, max: 900 },
+        //     quantity: 4,
+        // });
+
         this.exploEmitter = this.particle.createEmitter({
             x: 0,
             y: 0,
             speed: { min: -400, max: 400 },
             angle: { min: 0, max: 360 },
-            scale: { start: 1, end: 0, ease: 'Power3' },    
-            blandMode: 'ADD',
+            scale: { start: 1.2, end: 0, ease: 'Power3' },    
+            blandMode: 'SCREEN',
             active: false,
             lifespan: { min: 900, max: 900 },
             quantity: 4,
         });
-        //this.exploEmitter.on = false;
 
         //keep score
         this.p1Score = 0;
@@ -166,7 +178,7 @@ class Play extends Phaser.Scene{
         }
         if(!this.gameOver){
             //Parallax
-            this.starfieldBG.tilePositionX -= .5;
+            this.starfieldBG.tilePositionX -= .1;
             this.starfieldClose.tilePositionX -= 5;
             this.starfieldMid.tilePositionX -= 2.5;
             this.starfieldFar.tilePositionX -= 1;
@@ -253,12 +265,13 @@ class Play extends Phaser.Scene{
         });
 
         //play particle explosion
-        //this.exploEmitter.setOrigin(0,0);
-        this.exploEmitter.setPosition(ship.x + 32, ship.y + 32);
+        // this.exploEmitter02.setPosition(ship.x + 32, ship.y+16);
+        // this.exploEmitter02.active = true;
+        // this.exploEmitter02.explode(50);
+
+        this.exploEmitter.setPosition(ship.x + 32, ship.y+16);
         this.exploEmitter.active = true;
-        this.exploEmitter.explode(100);
-        //this.exploEmitter.on = true;
-        //this.exploEmitter.emitParticleAt(100, ship.x + (ship.x/2), ship.y + (ship.y/2));
+        this.exploEmitter.explode(75);
 
         //add score
         this.p1Score += ship.points;
